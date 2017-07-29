@@ -18,10 +18,11 @@ from .decorators import auth_token_required, http_auth_required, \
 from .forms import ForgotPasswordForm, LoginForm, RegisterForm, \
     ResetPasswordForm, PasswordlessLoginForm, ConfirmRegisterForm
 from .signals import confirm_instructions_sent, password_reset, \
-    reset_password_instructions_sent, user_confirmed, user_registered
+    reset_password_instructions_sent, user_confirmed, user_registered,\
+    login_failed_wrong_password
 from .utils import login_user, logout_user, url_for_security
 
-__version__ = '3.0.0'
+__version__ = '3.0.0-dev1'
 __all__ = (
     'AnonymousUser',
     'ConfirmRegisterForm',
@@ -53,4 +54,5 @@ __all__ = (
     'url_for_security',
     'user_confirmed',
     'user_registered',
+    'login_failed_wrong_password'
 )

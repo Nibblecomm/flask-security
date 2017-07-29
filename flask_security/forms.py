@@ -24,6 +24,8 @@ from .utils import _, _datastore, config_value, get_message, \
     localize_callback, url_for_security, validate_redirect_url, \
     verify_and_update_password
 
+from .signals import login_failed_wrong_password
+
 lazy_gettext = make_lazy_gettext(lambda: localize_callback)
 
 _default_field_labels = {
@@ -235,11 +237,14 @@ class LoginForm(Form, NextFormMixin):
         if self.user is None:
             self.email.errors.append(get_message('USER_DOES_NOT_EXIST')[0])
             return False
+
+
         if not self.user.password:
             self.password.errors.append(get_message('PASSWORD_NOT_SET')[0])
             return False
         if not verify_and_update_password(self.password.data, self.user):
             self.password.errors.append(get_message('INVALID_PASSWORD')[0])
+            login_failed_wrong_password.send(self.user)
             return False
         if requires_confirmation(self.user):
             self.email.errors.append(get_message('CONFIRMATION_REQUIRED')[0])
@@ -247,6 +252,9 @@ class LoginForm(Form, NextFormMixin):
         if not self.user.is_active:
             self.email.errors.append(get_message('DISABLED_ACCOUNT')[0])
             return False
+
+
+
         return True
 
 

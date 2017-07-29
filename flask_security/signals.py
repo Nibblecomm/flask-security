@@ -27,3 +27,5 @@ password_changed = signals.signal("password-changed")
 
 reset_password_instructions_sent = signals.signal(
     "password-reset-instructions-sent")
+
+login_failed_wrong_password = signals.signal("login-failed-wrong-password")
