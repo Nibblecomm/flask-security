@@ -244,7 +244,7 @@ class LoginForm(Form, NextFormMixin):
             return False
         if not verify_and_update_password(self.password.data, self.user):
             self.password.errors.append(get_message('INVALID_PASSWORD')[0])
-            login_failed_wrong_password.send(self.user)
+            login_failed_wrong_password.send(current_app._get_current_object(),user= self.user)
             return False
         if requires_confirmation(self.user):
             self.email.errors.append(get_message('CONFIRMATION_REQUIRED')[0])
@@ -252,8 +252,6 @@ class LoginForm(Form, NextFormMixin):
         if not self.user.is_active:
             self.email.errors.append(get_message('DISABLED_ACCOUNT')[0])
             return False
-
-
 
         return True
 
